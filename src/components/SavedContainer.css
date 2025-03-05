@@ -1,0 +1,59 @@
+.saved-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin: 12px;
+    padding: 12px;
+    width: min(75vw, 1080px);
+    border: .8px solid orange;
+    border-radius: 10px;
+    text-align: center;
+
+    .label {
+        font-style: italic;
+        color: red;
+    }
+
+    .text-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+    }
+        
+    .input-container, .output-container {
+        display: flex;
+        align-items: center; 
+        flex: 1;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 0;
+        outline: none;
+        overflow: hidden;
+    
+        textarea {
+            flex: 1;
+            border: none;
+            padding: 7px;
+            background: transparent;
+            width: min(450px, 40vw);
+            color: red;
+            font-size: 22px;
+            letter-spacing: .9px;
+            min-height: 3.6rem;
+            overflow: auto;
+            resize: none;
+        }
+    }
+      
+      .icon {
+          margin: 0;
+          border-radius: 50%;
+          width: 36px;
+          height: 36px;
+          cursor: pointer;
+      }
+        
+}
+

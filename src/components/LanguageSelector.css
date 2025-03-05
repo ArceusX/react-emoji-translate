@@ -1,0 +1,69 @@
+.language-selector {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    gap: 20px;
+    margin: 10px;
+    > * {
+        height: 80%;
+        margin: 0px;
+    }
+}
+
+.main-container {
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #dffbbf;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.label {
+    flex-shrink: 0; /* Prevents it from shrinking */
+    margin: 0 20px; /* Adds space around label */
+    font-weight: bold;
+    font-size: min(1rem, 16px);
+}
+
+.dropdown {
+    display: flex;
+    justify-content: center;
+    width: 35%;
+    height: 24px;
+    outline: none;
+    font-size: min(1rem, 16px);
+}
+
+.emoji {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35%;
+}
+
+.emoji div {
+    font-size: 26px;
+}
+
+.refresh-container {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    width: 40px;
+
+    .icon {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+.placeholder {
+    visibility: hidden;
+    pointer-events: none;
+    width: 40px;
+    height: 40px;
+}

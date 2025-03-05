@@ -1,0 +1,22 @@
+.action-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 12px;
+    width: 50px;
+    height: 150px;
+    cursor: pointer;
+  
+    .icon {
+        margin: 0;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        padding: 3px;
+    }
+  
+    .icon:hover {
+      background: #b4ecc1;
+    }
+  }

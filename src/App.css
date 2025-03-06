@@ -46,7 +46,6 @@ footer {
   }
 }
 
-
 h1 {
   font-family: "Anton";
   text-align: center;
@@ -62,32 +61,10 @@ p {
   line-height: 1.5;
 }
 
-input[type="text"] {
-  padding: 10px;
-  font-size: 25px;
-  margin-right: 10px;
-  border: 1px solid #ddd;
-  background: transparent;
-  border-radius: 4px;
-  width: 300px;
-}
-
 label {
   display: inline-block;
   margin-left: 10px;
   font-size: 0.8em;
-}
-
-input {
-  flex-grow: 1;
-  padding: 0.5rem;
-  font-size: 1rem;
-  background-color: #dce7f6;
-  color: #cb6464;
-  border: none;
-  border-radius: 5px;
-  user-select: none;
-  margin: 0 0.5rem;
 }
 
 a {
@@ -99,6 +76,21 @@ a:hover {
   color: #e34c3e;
   border-color: #747bff;
 }
+
+/*
+.example-btn {
+  position: fixed;
+  top: 50px;
+  left: 20%;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #45a049;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+*/
 
 @media screen and (max-width: 1600px) and (orientation: landscape) {
   #root {

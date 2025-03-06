@@ -1,7 +1,7 @@
 /* Container for InfoBox */
 .info-box {
     position: fixed;
-    top: 30px;       
+    top: 40px;       
     right: 75px;   
     border: 1px solid #ccc;
     border-radius: 8px;

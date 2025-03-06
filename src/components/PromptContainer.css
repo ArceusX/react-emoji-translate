@@ -12,6 +12,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
       gap: 6px;
       margin-bottom: 18px;
     }
@@ -19,13 +20,15 @@
     .input-container, .output-container {
       flex: 1;
       display: flex;
+      flex-direction:column;
       align-items: center;
+      width: 580px;
       padding: 5px;
       overflow: hidden;
     
       textarea {
           background: transparent;
-          width: 580px;
+          width: 98%;
           font-size: 1rem;
           padding: 7px;
           letter-spacing: .9px;
@@ -45,17 +48,28 @@
     
       button {
         background-color: rgb(255, 191, 117);
-        padding: 0.45rem .9rem;
+        padding: 0.4rem .8rem;
         border: none;
         border-radius: 8px;
         font-weight: 500;
         font-family: inherit;
-        font-size: 1rem;
+        font-size: .9rem;
         cursor: pointer;
       }
     
       button:hover {
         transform: scale(1.2);
+      }
+    }
+
+    .emoji-picker {
+      position: absolute;
+      left: 10px;
+      top: 90%; 
+
+      img {
+        width: 40px;
+        height: 40px;
       }
     }
 

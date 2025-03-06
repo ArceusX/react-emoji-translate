@@ -1,9 +1,11 @@
 import { useState } from "react";
-import "./PromptContainer.css";
+import EmojiPicker from "emoji-picker-react";
 import TemperatureButton from "./TemperatureButton";
 import ActionContainer from "./ActionContainer";
 import useStore from '../lib/useStore';
 import useTranslate from '../lib/useTranslate';
+
+import "./PromptContainer.css";
 
 const PromptContainer = (
   { apiKey, placeholder = "Input", maxLength = 200 }
@@ -15,10 +17,17 @@ const PromptContainer = (
 
     const [dummy, setDummy]   = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [emojiOpen, setEmojiOpen] = useState(false);
 
     useTranslate(
       apiKey, setOutput, setErrorMessage,
       input, language, temperature, toEmoji, dummy);
+
+    const handleEmoji = (e) => {
+      console.log(input + e.emoji);
+      setInput(input + e.emoji);
+      setEmojiOpen(false);
+    };
 
     const copyToClipboard = (text) => {
       navigator.clipboard.writeText(text);
@@ -34,6 +43,23 @@ const PromptContainer = (
               placeholder={placeholder}
               maxLength={maxLength}
             />
+
+            <div className="emoji-picker">
+              <img
+                src="./icon.png"
+                alt=""
+                onClick={() => setEmojiOpen((prev) => !prev)}
+              />
+              <div className="picker">
+                <EmojiPicker 
+                  open={emojiOpen} 
+                  onEmojiClick={handleEmoji}
+                  categories={['smileys_people', 'activities', 'animals_nature', ]} 
+                  skinTonesDisabled={true}
+                  height={350} width={400} 
+                />
+              </div>
+            </div>
           </div>
 
           <ActionContainer setDummy={setDummy} />

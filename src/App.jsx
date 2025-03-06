@@ -41,7 +41,12 @@ function App() {
 
   return (
     <>
-      <h1>😁 AI Emoji Translator 💬</h1>
+      <h1 title="With ChatGPT">😁 AI Emoji Translator 💬</h1>
+      
+      {/* <button className="example-btn" onClick={() => setInput("I love this new app!")}>
+      👉 Example
+      </button>*/}
+
       <InfoBox />
       <LanguageSelector 
         languages={["English", "Español", "中文", "Deutsch", "日本語"]}

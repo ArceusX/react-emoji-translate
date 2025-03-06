@@ -1,5 +1,5 @@
 {
-  "name": "react-emoji-translate",
+  "name": "emoji-translate",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^1.6.2",
+    "emoji-picker-react": "^4.12.0",
     "openai": "^4.86.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

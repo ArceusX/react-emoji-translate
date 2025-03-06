@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "react-emoji-translate"
-  }
+    "default": "emoji-translate",
+    "emoji-translate": "emoji-translate"
+  },
+  "targets": {},
+  "etags": {}
 }

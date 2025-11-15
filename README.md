@@ -36,6 +36,6 @@ npm run build // Create a production build that you can host on a server
 npm run dev # App will run on http://localhost:5173/
 ```
 
-![Demo1](https://github.com/ArceusX/react-emoji-translate/blob/main/public/demo/demo1.PNG)
-![Demo2](https://github.com/ArceusX/react-emoji-translate/blob/main/public/demo/demo2.PNG)
-![Demo3](https://github.com/ArceusX/react-emoji-translate/blob/main/public/demo/demo3.PNG)
+![Demo1](https://github.com/ArceusX/react-emoji-translate/blob/main/demo/demo1.PNG)
+![Demo2](https://github.com/ArceusX/react-emoji-translate/blob/main/demo/demo2.PNG)
+![Demo3](https://github.com/ArceusX/react-emoji-translate/blob/main/demo/demo3.PNG)

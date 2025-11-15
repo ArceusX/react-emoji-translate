@@ -3,8 +3,8 @@ App that translates emojis and back to text. Built with **React**, **Zustand**, 
 
 ## Live Demo
 
-View the app live here: [Emoji Translate](https://emoji-translate.web.app/)
-Simplified version: [Emoji Translate Simplified](https://emoji-translate-simple.web.app/)
+View the app live here: [Emoji Translate](https://emo-translate.netlify.app/)
+Simplified version: [Emoji Translate Simplified](https://emo-translate-simple.netlify.app/)
 
 ## Technologies Used
 

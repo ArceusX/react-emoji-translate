@@ -83,7 +83,7 @@ const useTranslate = (
 
     useEffect(() => {
       messages.current.push(
-        { role: "user", content: "Use prior replies to craft a different one." })
+        { role: "user", content: "Use prior replies to craft a different one" })
         fetchReply(input, language, temperature, toEmoji);
     }, [dummy, fetchReply]);
   

@@ -1,8 +1,0 @@
-{
-  "projects": {
-    "default": "emoji-translate",
-    "emoji-translate": "emoji-translate"
-  },
-  "targets": {},
-  "etags": {}
-}

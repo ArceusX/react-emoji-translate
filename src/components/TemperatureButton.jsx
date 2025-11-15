@@ -1,5 +1,5 @@
 import useStore from "../lib/useStore";
-import "./TemperatureButton.css";
+import "./css/TemperatureButton.css";
 
 // Clickable. Controls degree of randomness of LLM's
 // replies; low --> deterministic, high --> more creative

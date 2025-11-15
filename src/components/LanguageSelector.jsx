@@ -1,5 +1,5 @@
 import useStore from "../lib/useStore";
-import "./LanguageSelector.css";
+import "./css/LanguageSelector.css";
 
 const LanguageSelector = ({ languages, emoji, icon }) => {
   const { language, setLanguage, toEmoji, toggleToEmoji } = useStore();

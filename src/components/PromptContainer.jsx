@@ -5,83 +5,83 @@ import ActionContainer from "./ActionContainer";
 import useStore from '../lib/useStore';
 import useTranslate from '../lib/useTranslate';
 
-import "./PromptContainer.css";
+import "./css/PromptContainer.css";
 
-const PromptContainer = (
-  { apiKey, placeholder = "Input", maxLength = 200 }
-) => {
-    const {
-      temperature, language, toEmoji, 
-      input, output, setInput, setOutput,
-    } = useStore();
+const PromptContainer = ({ placeholder = "Input", maxLength = 200 }) => {
+  const {
+    temperature, language, toEmoji, 
+    input, output, setInput, setOutput,
+  } = useStore();
 
-    const [dummy, setDummy]   = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [emojiOpen, setEmojiOpen] = useState(false);
+  const [dummy, setDummy] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [emojiOpen, setEmojiOpen] = useState(false);
 
-    useTranslate(
-      apiKey, setOutput, setErrorMessage,
-      input, language, temperature, toEmoji, dummy);
+  // useTranslate should call Netlify function internally
+  useTranslate(
+    setOutput, setErrorMessage,
+    input, language, temperature, toEmoji, dummy
+  );
 
-    const handleEmoji = (e) => {
-      console.log(input + e.emoji);
-      setInput(input + e.emoji);
-      setEmojiOpen(false);
-    };
+  const handleEmoji = (e) => {
+    setInput(input + e.emoji);
+    setEmojiOpen(false);
+  };
 
-    const copyToClipboard = (text) => {
-      navigator.clipboard.writeText(text);
-    };
-  
-    return (
-      <div className="prompt-container">
-        <div className="text-container">
-          <div className="input-container">
-            <textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder={placeholder}
-              maxLength={maxLength}
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+  };
+
+  return (
+    <div className="prompt-container">
+      <div className="text-container">
+        <div className="input-container">
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={placeholder}
+            maxLength={maxLength}
+          />
+
+          <div className="emoji-picker">
+            <img
+              src="./icon.png"
+              alt=""
+              onClick={() => setEmojiOpen((prev) => !prev)}
             />
-
-            <div className="emoji-picker">
-              <img
-                src="./icon.png"
-                alt=""
-                onClick={() => setEmojiOpen((prev) => !prev)}
-              />
+            {emojiOpen && (
               <div className="picker">
                 <EmojiPicker 
-                  open={emojiOpen} 
                   onEmojiClick={handleEmoji}
-                  categories={['smileys_people', 'activities', 'animals_nature', ]} 
+                  categories={['smileys_people', 'activities', 'animals_nature']} 
                   skinTonesDisabled={true}
                   height={350} width={400} 
                 />
               </div>
-            </div>
+            )}
           </div>
+        </div>
 
-          <ActionContainer setDummy={setDummy} />
-          
-          <div className="output-container">
-            <textarea
-              value={output}
-              readOnly
-              placeholder="Output"
-            />
-          </div>
+        <ActionContainer setDummy={setDummy} />
+        
+        <div className="output-container">
+          <textarea
+            value={output}
+            readOnly
+            placeholder="Output"
+          />
         </div>
-  
-        <div className="copy-container">
-          <button onClick={() => copyToClipboard(input)}>Copy to Clip📋</button>
-          <TemperatureButton img="/thermometer.png" />
-          <button onClick={() => copyToClipboard(output)}>Copy to Clip📋</button>
-        </div>
-  
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
       </div>
-    );
-  };
+
+      <div className="copy-container">
+        <button onClick={() => copyToClipboard(input)}>Copy to Clip📋</button>
+        <TemperatureButton img="/thermometer.png" />
+        <button onClick={() => copyToClipboard(output)}>Copy to Clip📋</button>
+      </div>
+
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+    </div>
+  );
+};
 
 export default PromptContainer;

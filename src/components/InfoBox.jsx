@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import "./InfoBox.css";
+import "./css/InfoBox.css";
 
 const MESSAGE = 
 `1. Top lightgreen box: Set language in scrolldown, translate direction by clicking [Flip]

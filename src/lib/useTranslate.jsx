@@ -1,32 +1,20 @@
 import { useRef, useEffect, useMemo } from 'react';
-import { OpenAI } from "openai";
-
-const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true,
-});
 
 function debounce(func, delay) {
   let timer;
-  return function(...args) {
+  return function (...args) {
     clearTimeout(timer);
-    timer = setTimeout(() => {
-      func.apply(this, args);
-    }, delay);
+    timer = setTimeout(() => func.apply(this, args), delay);
   };
 }
 
 function defaultPrompt(input, language, toEmoji) {
-  if (toEmoji) {
-    return `Translate "${input}" in ${language} to emojis. No word, prefer shorter`
-  }
-  else {
-    return `Translate ${input} emojis to ${language}. No emojis, prefer shorter`
-  }
+  return toEmoji
+    ? `Translate "${input}" in ${language} to emojis. No words, keep short.`
+    : `Translate ${input} emojis to ${language}. No emojis, keep short.`;
 }
 
 const useTranslate = (
-  apiKey,
   setOutput,
   setErrorMessage,
   input,
@@ -35,60 +23,63 @@ const useTranslate = (
   toEmoji,
   dummy,
   delay = 750,
-  prompt = defaultPrompt) => {
-    const messages = useRef([]);
-    const output   = useRef("");
+  prompt = defaultPrompt
+) => {
 
-    const fetchReply = useMemo(() => debounce(
-      async (input, language, temperature, toEmoji) => {
-      if (!input || !input.trim()) {
-        setOutput("");
-        return;
-      }
-      if (!apiKey || apiKey.length < 30) {
-        setErrorMessage("Error 401: invalid_api_key");
-        return; 
-      }
+  const messages = useRef([]);
 
-      try {
-        let content = prompt(input, language, toEmoji);
-        messages.current.push({ "role": "user", "content": content });
-        
-        let reply = await openai.chat.completions.create({
-          model: "gpt-3.5-turbo",
-          messages: messages.current,
-          temperature: temperature
-        });
-        
-        reply = reply.choices[0]?.message?.content || "";
-        setOutput(reply);
-        if (reply) {
-          messages.current.push({ "role": "assistant", "content": reply});
+  const fetchReply = useMemo(
+    () =>
+      debounce(async (input, language, temperature, toEmoji) => {
+        if (!input || !input.trim()) {
+          setOutput("");
+          return;
         }
-      } catch (error) {
-        if (error.status) {
-          setErrorMessage(`Error ${error.status}: ${error.code}`);
-        } else {
-          setErrorMessage("Error: Network or unexpected issue.");
-        }
-      }
-    }, delay), [apiKey]);
-  
-    // fetchReply is recreated with new apiKey when it changes
-    // Unlike other dependencies, no rerender on apiKey change
-    useEffect(() => {
-      messages.current = [];
-      fetchReply(input, language, temperature, toEmoji);
-    }, [input, language, temperature, toEmoji]);
 
-    useEffect(() => {
-      messages.current.push(
-        { role: "user", content: "Use prior replies to craft a different one" })
-        fetchReply(input, language, temperature, toEmoji);
-    }, [dummy, fetchReply]);
-  
-    return output.current
+        try {
+          const content = prompt(input, language, toEmoji);
+          messages.current.push({ role: "user", content });
+
+          const res = await fetch("/.netlify/functions/openai", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              messages: messages.current,
+              temperature
+            })
+          });
+
+          if (!res.ok) {
+            setErrorMessage(`Error ${res.status}`);
+            return;
+          }
+
+          const data = await res.json();
+          const reply = data.reply;
+
+          setOutput(reply);
+          if (reply) {
+            messages.current.push({ role: "assistant", content: reply });
+          }
+
+        } catch (err) {
+          setErrorMessage("Network error or unexpected issue.");
+        }
+      }, delay),
+    []
+  );
+
+  useEffect(() => {
+    messages.current = [];
+    fetchReply(input, language, temperature, toEmoji);
+  }, [input, language, temperature, toEmoji]);
+
+  useEffect(() => {
+    messages.current.push({ role: "user", content: "Give a different variation." });
+    fetchReply(input, language, temperature, toEmoji);
+  }, [dummy, fetchReply]);
+
+  return null;
 };
-  
 
 export default useTranslate;

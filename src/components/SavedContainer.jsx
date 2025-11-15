@@ -1,4 +1,4 @@
-import "./SavedContainer.css";
+import "./css/SavedContainer.css";
 
 // Contains icon that onClick, calls passed handleIcon
 // on saved data. Flanked by input, output textareas

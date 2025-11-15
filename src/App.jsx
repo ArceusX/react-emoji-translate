@@ -1,30 +1,20 @@
 import { useState, useEffect } from 'react';
 import useStore from './lib/useStore';
-import LanguageSelector from "./components/LanguageSelector";
-import InfoBox from "./components/InfoBox.jsx";
-import PromptContainer from "./components/PromptContainer";
-import SavedContainer from './components/SavedContainer';
+import { LanguageSelector, InfoBox, PromptContainer, SavedContainer } from "./components";
 
-import './App.css';
-
-const API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
+import "./App.css";
 
 function App() {
-  const [apiKey, setApiKey] = useState(API_KEY);
   const [errorMessage, setErrorMessage] = useState("");
 
   const { setInput, saved } = useStore();
 
+  // No API key needed on frontend
   useEffect(() => {
-    if (!apiKey) {
-      setErrorMessage("OpenAI API key is missing");
-    } else {
-      setErrorMessage("");
-    }
-  }, [apiKey]);
+    setErrorMessage(""); 
+  }, []);
 
-  // On mount, set order to upload input, outp
-  // ut to localStorage on exit
+  // Save state to localStorage on page exit
   useEffect(() => {
     const handleBeforeUnload = () => {
       const { temperature, language, toEmoji, saved } = useStore.getState();
@@ -42,32 +32,33 @@ function App() {
   return (
     <>
       <h1 title="With ChatGPT">😁 AI Emoji Translator 💬</h1>
-      
-      {/* <button className="example-btn" onClick={() => setInput("I love this new app!")}>
-      👉 Example
-      </button>*/}
 
       <InfoBox />
+
       <LanguageSelector 
         languages={["English", "Español", "中文", "Deutsch", "日本語"]}
         emoji="🤩"
         icon="./refresh.png"
       />
+
       <PromptContainer
-        apiKey = {apiKey}
         placeholder="Input"
         errorMessage={errorMessage}
       />
 
-      {/* handleIcon: 2 params. Set (i)th readonly input 
-          value as modifiable input in PromptContainer  */}
       <SavedContainer
-      placeholder="Click each ▶️ to rerun" icon = "/rerun.png"
-      handleIcon = {(arg, i) => setInput(arg.input[i])}
-      data = {saved} />
-      
+        placeholder="Click each ▶️ to rerun"
+        icon="/rerun.png"
+        handleIcon={(arg, i) => setInput(arg.input[i])}
+        data={saved}
+      />
+
       <footer>
-        <a href="https://github.com/ArceusX?tab=repositories" target="_blank" rel="noreferrer">
+        <a
+          href="https://github.com/ArceusX?tab=repositories"
+          target="_blank"
+          rel="noreferrer"
+        >
           <img src="./github.png" alt="GitHub" />
           <p>ArceusX: Triet Lieu</p>
         </a>

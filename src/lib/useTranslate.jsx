@@ -1,4 +1,5 @@
 import { useRef, useEffect, useMemo } from 'react';
+import { APP_CONFIG } from '../config/app.config';
 
 function debounce(func, delay) {
   let timer;
@@ -22,10 +23,8 @@ const useTranslate = (
   temperature,
   toEmoji,
   dummy,
-  delay = 750,
   prompt = defaultPrompt
 ) => {
-
   const messages = useRef([]);
 
   const fetchReply = useMemo(
@@ -65,19 +64,19 @@ const useTranslate = (
         } catch (err) {
           setErrorMessage("Network error or unexpected issue.");
         }
-      }, delay),
-    []
+      }, APP_CONFIG.input.debounceDelay),
+    [prompt, setOutput, setErrorMessage]
   );
 
   useEffect(() => {
     messages.current = [];
     fetchReply(input, language, temperature, toEmoji);
-  }, [input, language, temperature, toEmoji]);
+  }, [input, language, temperature, toEmoji, fetchReply]);
 
   useEffect(() => {
     messages.current.push({ role: "user", content: "Give a different variation." });
     fetchReply(input, language, temperature, toEmoji);
-  }, [dummy, fetchReply]);
+  }, [dummy, fetchReply, input, language, temperature, toEmoji]);
 
   return null;
 };

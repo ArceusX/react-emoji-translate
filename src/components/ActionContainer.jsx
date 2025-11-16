@@ -1,34 +1,66 @@
-import useStore from '../lib/useStore';
-
-import "./css/ActionContainer.css";
+import { useCallback } from 'react';
+import { Flex, Image } from '@chakra-ui/react';
+import { useInput, useSaved } from '../lib/useStore';
 
 const ActionContainer = ({ setDummy }) => {
-  const { setInput, setSaved } = useStore();
+  const { setInput } = useInput();
+  const { setSaved } = useSaved();
+
+  const handleRerun = useCallback(() => {
+    setDummy(prev => !prev);
+  }, [setDummy]);
+
+  const handleClear = useCallback(() => {
+    setInput("");
+  }, [setInput]);
 
   return (
-    <div className="action-container">
-      <img
+    <Flex
+      className="action-container"
+      flexDir={{ base: 'row', md: 'column' }}
+      align="center"
+      justify="center"
+      flexShrink={0}
+      gap="12px"
+      w={{ base: '50px', md: '50px' }}
+      h={{ base: 'auto', md: '125px' }}
+      cursor="pointer"
+      my={{ base: '10px', md: 0 }}
+    >
+      <Image
         src="/rerun.png"
         alt="Rerun"
-        className="icon"
+        borderRadius="50%"
+        w="35px"
+        h="35px"
+        p="3px"
         title="Rerun"
-        onClick={() => setDummy(prev => !prev)}
+        onClick={handleRerun}
+        _hover={{ bg: '#b4ecc1' }}
       />
-      <img
+      <Image
         src="/cross.png"
         alt="Clear"
-        className="icon"
+        borderRadius="50%"
+        w="35px"
+        h="35px"
+        p="3px"
         title="Clear Input"
-        onClick={() => setInput("")}
+        onClick={handleClear}
+        _hover={{ bg: '#b4ecc1' }}
       />
-      <img
+      <Image
         src="/save.png"
         alt="Save"
-        className="icon"
+        borderRadius="50%"
+        w="35px"
+        h="35px"
+        p="3px"
         title="Save"
-        onClick={() => setSaved() }
+        onClick={setSaved}
+        _hover={{ bg: '#b4ecc1' }}
       />
-    </div>
+    </Flex>
   );
 };
 

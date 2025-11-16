@@ -1,52 +1,147 @@
 import { create } from "zustand";
+import { APP_CONFIG } from "../config/app.config";
 
-const useStore = create((set) => ({
-  temperature:
-      parseFloat(localStorage.getItem("ret-temperature")) || 0.5,
-  language:
-      localStorage.getItem("ret-language") || "English",
-  toEmoji: (localStorage.getItem("ret-toEmoji") ?? "true") === "true",
-  input: "",
-  output: "",
-  saved: {
-    input : JSON.parse(localStorage.getItem("ret-input") || "{}"),
-    output: JSON.parse(localStorage.getItem("ret-output") || "{}"),
-    lastSaved: 0,
-  },
+const useStore = create((set) => {
+  // Initialize saved slots dynamically
+  const initSavedSlots = () => {
+    const slots = {};
+    for (let i = 0; i < APP_CONFIG.saved.maxItems; i++) {
+      const savedInput = localStorage.getItem(`ret-input-${i}`);
+      const savedOutput = localStorage.getItem(`ret-output-${i}`);
+      slots[i] = {
+        input: savedInput || "",
+        output: savedOutput || "",
+      };
+    }
+    return slots;
+  };
 
-  raiseTemperature: () =>
-    set((state) => {
-      const t = state.temperature + 0.1;
-      const temperature = t > 1.0 ? 0.1 : parseFloat((t).toFixed(1));
-      return { temperature };
-    }),
+  return {
+    // Temperature with config
+    temperature:
+      parseFloat(localStorage.getItem("ret-temperature")) || 
+      APP_CONFIG.temperature.default,
+    
+    // Language with config
+    language:
+      localStorage.getItem("ret-language") || 
+      APP_CONFIG.languages[0],
+    
+    toEmoji: (localStorage.getItem("ret-toEmoji") ?? "true") === "true",
+    input: "",
+    output: "",
+    
+    // Dynamic saved slots
+    saved: initSavedSlots(),
+    currentSaveSlot: 0,
 
-  setLanguage: (language) => set(() => ({ language })),
+    // Temperature actions using config
+    raiseTemperature: () =>
+      set((state) => {
+        const { min, max, step } = APP_CONFIG.temperature;
+        let newTemp = state.temperature + step;
+        
+        // Wrap around to min if exceeds max
+        if (newTemp > max) {
+          newTemp = min;
+        }
+        
+        return { temperature: parseFloat(newTemp.toFixed(1)) };
+      }),
 
-  toggleToEmoji: () =>
-    set((state) => {
-      const newToEmoji = !state.toEmoji;
-      return { toEmoji: newToEmoji };
-    }),
+    lowerTemperature: () =>
+      set((state) => {
+        const { min, max, step } = APP_CONFIG.temperature;
+        let newTemp = state.temperature - step;
+        
+        // Wrap around to max if below min
+        if (newTemp < min) {
+          newTemp = max;
+        }
+        
+        return { temperature: parseFloat(newTemp.toFixed(1)) };
+      }),
 
-  setInput : (input) => set(() => ({ input })),
-  setOutput: (output) => set(() => ({ output })),
+    setLanguage: (language) => set(() => ({ language })),
 
-  setSaved: () =>
-    set((state) => {
-      if (state.input?.trim() !== "") {
-        const newLastSaved = state.saved.lastSaved === 1 ? 0 : 1;
-  
+    toggleToEmoji: () =>
+      set((state) => ({ toEmoji: !state.toEmoji })),
+
+    setInput: (input) => set(() => ({ input })),
+    setOutput: (output) => set(() => ({ output })),
+
+    // Save to next available slot
+    setSaved: () =>
+      set((state) => {
+        if (!state.input?.trim()) return state;
+        
+        const nextSlot = (state.currentSaveSlot + 1) % APP_CONFIG.saved.maxItems;
+        
         return {
           saved: {
-            input: { ...state.saved.input, [state.saved.lastSaved]: state.input },
-            output: { ...state.saved.output, [state.saved.lastSaved]: state.output },
-            lastSaved: newLastSaved,
+            ...state.saved,
+            [state.currentSaveSlot]: {
+              input: state.input,
+              output: state.output,
+            },
           },
+          currentSaveSlot: nextSlot,
         };
-      }
-      return state;
-    }),
+      }),
+    
+    // Clear specific slot
+    clearSavedSlot: (slotIndex) =>
+      set((state) => ({
+        saved: {
+          ...state.saved,
+          [slotIndex]: { input: "", output: "" },
+        },
+      })),
+    
+    // Clear all slots
+    clearAllSaved: () =>
+      set(() => {
+        const slots = {};
+        for (let i = 0; i < APP_CONFIG.saved.maxItems; i++) {
+          slots[i] = { input: "", output: "" };
+        }
+        return { saved: slots, currentSaveSlot: 0 };
+      }),
+  };
+});
+
+// Selectors
+export const useTemperature = () => useStore(state => ({
+  temperature: state.temperature,
+  raiseTemperature: state.raiseTemperature,
+  lowerTemperature: state.lowerTemperature,
+}));
+
+export const useLanguage = () => useStore(state => ({
+  language: state.language,
+  setLanguage: state.setLanguage,
+}));
+
+export const useToEmoji = () => useStore(state => ({
+  toEmoji: state.toEmoji,
+  toggleToEmoji: state.toggleToEmoji,
+}));
+
+export const useInput = () => useStore(state => ({
+  input: state.input,
+  setInput: state.setInput,
+}));
+
+export const useOutput = () => useStore(state => ({
+  output: state.output,
+  setOutput: state.setOutput,
+}));
+
+export const useSaved = () => useStore(state => ({
+  saved: state.saved,
+  setSaved: state.setSaved,
+  clearSavedSlot: state.clearSavedSlot,
+  clearAllSaved: state.clearAllSaved,
 }));
 
 export default useStore;

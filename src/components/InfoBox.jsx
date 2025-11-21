@@ -1,20 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { Box, Button, Textarea, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { Box, Button, Text, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 
-const MESSAGE = [
-  "Top lightgreen box: Set language in scrolldown, translate direction by clicking [Flip]",
-  "Center blue box: Type your input in the left box to translate",
-  "Center blue box: Click 💾 to save text to local storage",
-  "Lower white box: Click ▶️ to rerun with that input",
-  "Center column icons: ▶️ rerun, ❌ clear text, 💾 save",
-  "🌡️ to change temperature (higher → more creative output)"
-];
-
-const InfoBox = ({ value = MESSAGE }) => {
+const InfoBox = ({ info }) => {
   const [isOpen, setIsOpen] = useState(true);
   const boxRef = useRef(null);
 
-  // FIX: Only attach listener when open
   useEffect(() => {
     if (!isOpen) return;
 
@@ -48,11 +38,11 @@ const InfoBox = ({ value = MESSAGE }) => {
         bg="purple.300"
         color="white"
         w="100%"
-        fontSize={{ base: '16px', md: '18px' }}
+        fontSize={{ base: '14px', md: '16px' }}
         fontWeight="bold"
         onClick={() => setIsOpen(!isOpen)}
         borderRadius="5px"
-        p="10px"
+        p="8px"
         _hover={{ bg: '#c57dd6' }}
       >
         {`👉 ${isOpen ? "Hide" : "Show"} Help`}
@@ -72,12 +62,11 @@ const InfoBox = ({ value = MESSAGE }) => {
         >
           <Tabs variant="enclosed" colorScheme="purple" isFitted>
             <TabList>
-              {value.map((_, i) => (
+              {info.map((_, i) => (
                 <Tab
-                  key={i} fontSize={{ base: "12px", md: "14px" }}
-                  _selected={{
-                    bg: "purple.300",
-                  }}
+                  key={i} 
+                  fontSize={{ base: "14px", }}
+                  _selected={{ bg: "purple.300" }}
                 >
                   {i + 1}
                 </Tab>
@@ -85,22 +74,27 @@ const InfoBox = ({ value = MESSAGE }) => {
             </TabList>
 
             <TabPanels>
-              {value.map((text, i) => (
+              {info.map((lines, i) => (
                 <TabPanel key={i}>
-                  <Textarea
-                    readOnly
-                    overflowY="auto"
-                    value={text}
-                    w="100%"
+                  <Box
                     h={{ base: '140px', md: '140px' }}
-                    resize="none"
-                    fontSize={{ base: '16px', md: '18px' }}
-                    border="1px solid #ccc"
-                    p="10px"
-                    borderRadius="5px"
-                    lineHeight={1.5}
+                    overflowY="auto"
+                    p="8px"
                     bg="gray.50"
-                  />
+                    border="1px solid #ccc"
+                    borderRadius="5px"
+                    lineHeight={1.3}
+                  >
+                    {lines.map((line, index) =>
+                      line === "" ? (
+                        <Box key={index} h="8px" /> // empty line
+                      ) : (
+                        <Text key={index} mb={1} fontSize={{ base: "18px", }}>
+                          {line}
+                        </Text>
+                      )
+                    )}
+                  </Box>
                 </TabPanel>
               ))}
             </TabPanels>
@@ -110,5 +104,6 @@ const InfoBox = ({ value = MESSAGE }) => {
     </Box>
   );
 };
+
 
 export default InfoBox;

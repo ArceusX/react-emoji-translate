@@ -1,10 +1,10 @@
 export const APP_CONFIG = {
   // Temperature settings
   temperature: {
-    min: 0.1,
+    min: 0.0,
     max: 1.0,
-    step: 0.1,
-    default: 0.5,
+    step: 0.2,
+    default: 0.6,
   },
   
   // Saved items configuration
@@ -44,13 +44,45 @@ export const APP_CONFIG = {
   
   // Help messages
   helpMessages: [
-    "Top lightgreen box: Set language in scrolldown, translate direction by clicking [Flip]",
-    "Center blue box: Type your input in the left box to translate",
-    "Center blue box: Click 💾 to save text to local storage",
-    "Lower white box: Click ▶️ to rerun with that input",
-    "Center column icons: ▶️ rerun, ❌ clear text, 💾 save",
-    "🌡️ to change temperature (higher → more creative output)"
+    [
+      "Top-center green box",
+      "",
+      "Scrolldown: Select language",
+      "Green icon: Flip translate direction"
+    ],
+    [
+      "Middle blue box",
+      "",
+      "Left: Enter your input",
+      "Right: Automatically show translation"
+    ],
+    [
+      "Middle blue box",
+      "",
+      "🤠: Open emoji picker",
+      "Click outside modal to close picker"
+    ],
+    [
+      "Middle blue box",
+      "",
+      "🌡️: Change prompt's temperature",
+      "(higher → more creative output)"
+    ],
+    [
+      "Middle column action icons:",
+      "",
+      "▶️ rerun",
+      "❌ clear text",
+      "💾 save",
+    ],
+    [
+      "Saved Translations (white box)",
+      "",
+      "▶️: Rerun with this input",
+      "❌: Clear save"
+    ]
   ],
+
   
   // Emoji picker
   emojiPicker: {

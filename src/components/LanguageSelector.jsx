@@ -22,7 +22,7 @@ const LanguageSelector = ({ emoji, icon }) => {
       h="auto"
       gap={{ base: '10px', }}
       flexWrap="wrap"
-      justifyContent="center"
+      justifyContent="left"
       w="500px"
     >
       <Flex

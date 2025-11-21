@@ -81,7 +81,7 @@ function App() {
           w="500px"
           mx="auto"
         >
-          <InfoBox />
+          <InfoBox info = { APP_CONFIG.helpMessages }/>
           <PromptExample onClick={() => setInput("I love dogs and I love this app!")} />
         </Flex>
 

@@ -7,10 +7,18 @@ Translate emojis and back to human text, in multiple languages **
 
 ## Technologies Used
 
-- **React**: Front-end library to create modular JS code
-- **State Management**: Manage states across components with **Zustand**
-- **ChatGPT**: Return translations through API Calls
-- **Claude** : Another supported provider
+**UI & State**
+- **React**: Front-end library for building interactive components.
+- **@chakra-ui/react**: Prebuilt, accessible UI components for faster styling.
+- **Zustand**: Simple state management across components.
+
+**API & Translation**
+- **Axios**: HTTP client for API requests.
+- **OpenAI**: Client library to access ChatGPT translations.
+- **Claude**: Alternative translation provider.
+
+**Other**
+- **emoji-picker-react**: Component for picking emojis as input.
 
 ## Start
 

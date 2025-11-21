@@ -16,7 +16,6 @@ const PromptExample = ({ onClick }) => {
     >
       <Button
         className="prompt-example-btn"
-        bg="#d78de6"
         color="white"
         bg="green.500"
         w="100%"
